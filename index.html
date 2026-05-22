@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vignesh | Portfolio 2026</title>
+    <title>Vignesh | Optimized Portfolio</title>
     
     <link rel="preconnect" href="https://prod.spline.design">
-    <link rel="preload" href="https://unpkg.com/@splinetool/viewer@1.12.94/build/spline-viewer.js" as="script">
-
     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.94/build/spline-viewer.js"></script>
     <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script> 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;800&display=swap" rel="stylesheet">
@@ -19,168 +17,116 @@
             --border: rgba(255, 255, 255, 0.1);
         }
 
-        /* --- LOADER STYLES --- */
         #loader {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            background: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1);
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #000; display: flex; justify-content: center; align-items: center;
+            z-index: 9999; transition: opacity 0.8s ease;
         }
 
-        .loader-text {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: 10px;
-            color: white;
-            animation: pulse 1.5s infinite ease-in-out;
-            font-family: 'Inter', sans-serif;
-        }
+        .loader-text { font-size: 1.2rem; font-weight: 800; letter-spacing: 8px; color: white; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 0.2; transform: scale(0.95); }
-            50% { opacity: 1; transform: scale(1); }
-        }
+        nav, main { opacity: 0; transform: translateY(20px); transition: opacity 1.5s ease, transform 1.5s ease; }
+        .loaded nav, .loaded main { opacity: 1; transform: translateY(0); }
 
-        /* --- CONTENT FADE-IN ANIMATION --- */
-        nav, main { 
-            opacity: 0; 
-            /* Start slightly lower for the slide-up effect */
-            transform: translateY(40px); 
-            /* Slow 2-second transition for a premium feel */
-            transition: opacity 2s cubic-bezier(0.16, 1, 0.3, 1), 
-                        transform 2s cubic-bezier(0.16, 1, 0.3, 1); 
-            pointer-events: none;
-            will-change: opacity, transform;
-        }
-
-        .loaded nav, .loaded main { 
-            opacity: 1; 
-            transform: translateY(0); /* Slide to original position */
-            pointer-events: auto;
-        }
-
-        /* --- BASE STYLES --- */
         html.lenis, html.lenis body { height: auto; }
-        .lenis.lenis-smooth { scroll-behavior: auto !important; }
-
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
         body { background-color: #000; color: white; overflow-x: hidden; height: 400vh; }
 
-        .bg-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; overflow: hidden; background: #000; }
+        .bg-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: #000; }
 
         .spline-scene {
-            position: absolute;
-            top: -5%; left: -5%;
-            width: 110%; height: 110%;
-            opacity: 0;
-            transition: opacity 1.5s cubic-bezier(0.23, 1, 0.32, 1);
-            pointer-events: none; 
-            will-change: transform, opacity;
-            transform: translateZ(0);
+            position: absolute; top: -5%; left: -5%; width: 110%; height: 110%;
+            opacity: 0; transition: opacity 0.8s ease;
+            display: none; /* KEY FIX: Only active scene is displayed */
+            pointer-events: none;
         }
 
-        /* --- UI STYLING --- */
-        nav { position: fixed; top: 0; width: 100%; padding: 40px 60px; display: flex; justify-content: space-between; z-index: 100; }
-        .logo { font-weight: 800; font-size: 1.4rem; letter-spacing: -1px; }
+        nav { position: fixed; top: 0; width: 100%; padding: 25px; display: flex; justify-content: space-between; z-index: 100; }
+        .logo { font-weight: 800; font-size: 1.1rem; }
 
         section { height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 10%; position: relative; z-index: 10; }
         .hero { align-items: center; text-align: center; }
-        .hero h1 { font-size: clamp(4rem, 12vw, 9rem); font-weight: 800; line-height: 0.8; }
+        .hero h1 { font-size: clamp(3rem, 10vw, 8rem); font-weight: 800; line-height: 0.9; }
 
-        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
-        .card { background: var(--glass); backdrop-filter: blur(25px); border: 1px solid var(--border); padding: 40px; border-radius: 30px; }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+        .card { 
+            background: var(--glass); 
+            backdrop-filter: blur(10px); /* Lowered blur for mobile performance */
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border); 
+            padding: 30px; border-radius: 20px; 
+        }
 
-        .btn { display: inline-block; margin-top: 40px; padding: 20px 50px; background: white; color: black; text-decoration: none; border-radius: 100px; font-weight: 800; pointer-events: auto; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-        .btn:hover { background: var(--accent); color: white; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 122, 255, 0.3); }
-
-        .footer-text { text-align: center; }
-        .social-links { margin-top: 30px; display: flex; gap: 20px; justify-content: center; opacity: 0.5; font-size: 0.8rem; }
+        .btn { display: inline-block; margin-top: 30px; padding: 15px 40px; background: white; color: black; text-decoration: none; border-radius: 50px; font-weight: 800; transition: 0.3s; }
+        
+        /* Mobile adjustment for big titles */
+        @media (max-width: 768px) {
+            section { padding: 0 5%; }
+            .card { padding: 20px; }
+        }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="loader-text">VIGNESH</div>
-    </div>
+    <div id="loader"><div class="loader-text">VIGNESH</div></div>
 
     <nav>
         <div class="logo">VIGNESH</div>
-        <div style="opacity: 0.4; font-size: 0.8rem;">V.02 // 120 FPS</div>
+        <div style="opacity: 0.4; font-size: 0.7rem;">PORTFOLIO // 2026</div>
     </nav>
 
     <div class="bg-container">
-        <div id="scene-hero" class="spline-scene" style="opacity: 1; z-index: 4;">
-            <spline-viewer id="main-spline" url="https://prod.spline.design/EZSR1bLlfDTI4smJ/scene.splinecode"></spline-viewer>
-        </div>
-        <div id="scene-work" class="spline-scene" style="z-index: 3;">
-            <spline-viewer url="https://prod.spline.design/p-ZRUwDwFStpbG8L/scene.splinecode"></spline-viewer>
-        </div>
-        <div id="scene-contact" class="spline-scene" style="z-index: 2;">
-            <spline-viewer events-target="global" url="https://prod.spline.design/Jzm-6QCYydFf-sM8/scene.splinecode"></spline-viewer>
-        </div>
-        <div id="scene-footer" class="spline-scene" style="z-index: 1;">
-            <spline-viewer events-target="global" url="https://prod.spline.design/UDtF0IreE6wGU0nx/scene.splinecode"></spline-viewer>
-        </div>
+        <div id="scene-1" class="spline-scene" style="display: block; opacity: 1;"><spline-viewer id="main-spline" url="https://prod.spline.design/EZSR1bLlfDTI4smJ/scene.splinecode"></spline-viewer></div>
+        <div id="scene-2" class="spline-scene"><spline-viewer url="https://prod.spline.design/p-ZRUwDwFStpbG8L/scene.splinecode"></spline-viewer></div>
+        <div id="scene-3" class="spline-scene"><spline-viewer events-target="global" url="https://prod.spline.design/Jzm-6QCYydFf-sM8/scene.splinecode"></spline-viewer></div>
+        <div id="scene-4" class="spline-scene"><spline-viewer events-target="global" url="https://prod.spline.design/UDtF0IreE6wGU0nx/scene.splinecode"></spline-viewer></div>
     </div>
 
     <main>
         <section class="hero">
             <h1>VIGNESH</h1>
-            <p style="margin-top: 20px; opacity: 0.5; letter-spacing: 3px;">Experience Fluidity.</p>
+            <p style="margin-top: 15px; opacity: 0.5;">Creative Developer</p>
         </section>
 
         <section id="work">
-            <h2 style="font-size: 3.5rem; margin-bottom: 40px;">Selected Work</h2>
+            <h2 style="font-size: 2.5rem; margin-bottom: 30px;">Selected Work</h2>
             <div class="projects-grid">
-                <div class="card"><h3>Architecture</h3><p>Optimized for high-refresh displays.</p></div>
-                <div class="card"><h3>3D Interaction</h3><p>Immersive browser experiences.</p></div>
+                <div class="card"><h3>Project A</h3><p>Optimized 3D</p></div>
+                <div class="card"><h3>Project B</h3><p>Fluid Motion</p></div>
             </div>
         </section>
 
         <section id="contact">
             <div>
-                <h2 style="font-size: 5rem; line-height: 0.9;">LET'S <br>TALK.</h2>
+                <h2 style="font-size: 4rem; line-height: 0.9;">LET'S <br>TALK.</h2>
                 <a href="contact.html" class="btn">Get In Touch</a>
             </div>
         </section>
 
-        <section class="footer-text">
-            <h2 style="font-size: 2.5rem; opacity: 0.8;">THANKS FOR EXPLORING</h2>
-            <div class="social-links"><span>LINKEDIN</span> / <span>GITHUB</span> / <span>X</span></div>
-            <p style="margin-top: 100px; font-size: 0.7rem; opacity: 0.3;">© 2026 VIGNESH</p>
+        <section style="text-align: center;">
+            <h2 style="font-size: 2rem; opacity: 0.7;">THANKS FOR VISITING</h2>
+            <p style="margin-top: 50px; font-size: 0.6rem; opacity: 0.3;">© 2026 VIGNESH</p>
         </section>
     </main>
 
     <script>
+        // 1. LOADER LOGIC
         const mainSpline = document.getElementById('main-spline');
         const loader = document.getElementById('loader');
 
         function hideLoader() {
-            if (loader.style.display !== 'none') {
+            if (loader.style.opacity !== '0') {
                 loader.style.opacity = '0';
-                // Trigger the slow fade-in of main content
                 document.body.classList.add('loaded');
-                setTimeout(() => { loader.style.display = 'none'; }, 1000);
+                setTimeout(() => { loader.style.display = 'none'; }, 800);
             }
         }
-
-        // Loader Safety Checks
         mainSpline.addEventListener('load', hideLoader);
-        const checkInterval = setInterval(() => {
-            if (mainSpline.shadowRoot && mainSpline.shadowRoot.querySelector('canvas')) {
-                hideLoader();
-                clearInterval(checkInterval);
-            }
-        }, 500);
-        setTimeout(() => { hideLoader(); clearInterval(checkInterval); }, 5000);
+        setTimeout(hideLoader, 4000); // Fail-safe
 
-        // Smooth Scroll
-        const lenis = new Lenis();
+        // 2. SMOOTH SCROLL (Optimized for Mobile)
+        const lenis = new Lenis({ lerp: 0.1, touchMultiplier: 1.5 });
         function raf(time) {
             lenis.raf(time);
             updateScenes();
@@ -188,38 +134,56 @@
         }
         requestAnimationFrame(raf);
 
-        // Watermark Remover
-        function cleanSpline() {
-            document.querySelectorAll('spline-viewer').forEach(viewer => {
-                if (viewer.shadowRoot) {
-                    const logo = viewer.shadowRoot.querySelector('#logo');
-                    if (logo) logo.style.display = 'none';
-                }
-            });
-        }
-        setInterval(cleanSpline, 500);
-
-        // Scene Logic
-        const s1 = document.getElementById('scene-hero'), s2 = document.getElementById('scene-work'), s3 = document.getElementById('scene-contact'), s4 = document.getElementById('scene-footer');
+        // 3. SCENE MANAGER (Mobile Performance Optimized)
+        const scenes = [
+            document.getElementById('scene-1'),
+            document.getElementById('scene-2'),
+            document.getElementById('scene-3'),
+            document.getElementById('scene-4')
+        ];
 
         function updateScenes() {
-            const scrollY = window.scrollY, vh = window.innerHeight;
-            if (scrollY < vh * 0.7) setStates(1);
-            else if (scrollY < vh * 1.7) {
-                setStates(2);
-                const rot = (scrollY - vh * 0.7) * 0.15;
-                s2.style.transform = `scale(1.2) rotate(${rot}deg) translateZ(0)`;
-            } 
-            else if (scrollY < vh * 2.7) setStates(3);
-            else setStates(4);
+            const scrollY = window.scrollY;
+            const vh = window.innerHeight;
+            let activeIndex = 0;
+
+            if (scrollY < vh * 0.7) activeIndex = 0;
+            else if (scrollY < vh * 1.7) activeIndex = 1;
+            else if (scrollY < vh * 2.7) activeIndex = 2;
+            else activeIndex = 3;
+
+            scenes.forEach((scene, i) => {
+                if (i === activeIndex) {
+                    if (scene.style.display !== 'block') {
+                        scene.style.display = 'block';
+                        // Small timeout to allow display:block to register before opacity
+                        setTimeout(() => { scene.style.opacity = "1"; }, 10);
+                    }
+                } else {
+                    scene.style.opacity = "0";
+                    // Only hide completely after fade out is done
+                    setTimeout(() => { 
+                        if (scene.style.opacity === "0") scene.style.display = 'none'; 
+                    }, 800);
+                }
+            });
+
+            // Rotation logic for Scene 2
+            if (activeIndex === 1) {
+                const rot = (scrollY - vh * 0.7) * 0.1;
+                scenes[1].style.transform = `scale(1.1) rotate(${rot}deg)`;
+            }
         }
 
-        function setStates(n) {
-            [s1, s2, s3, s4].forEach((s, i) => {
-                if (i + 1 === n) { s.style.opacity = "1"; s.style.zIndex = "5"; }
-                else { s.style.opacity = "0"; s.style.zIndex = "1"; }
+        // Watermark Remover
+        setInterval(() => {
+            document.querySelectorAll('spline-viewer').forEach(v => {
+                if (v.shadowRoot) {
+                    const l = v.shadowRoot.querySelector('#logo');
+                    if (l) l.style.display = 'none';
+                }
             });
-        }
+        }, 1000);
     </script>
 </body>
 </html>
