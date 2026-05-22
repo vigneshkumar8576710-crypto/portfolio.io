@@ -5,13 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vignesh | Portfolio</title>
     
-    <!-- Pre-connect for speed -->
+    <!-- Pre-connect and Libraries -->
     <link rel="preconnect" href="https://prod.spline.design">
     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.94/build/spline-viewer.js"></script>
-    
-    <!-- Lottie Player Script -->
     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
-    
     <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script> 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;800&display=swap" rel="stylesheet">
 
@@ -28,35 +25,28 @@
             background: #000; display: flex; justify-content: center; align-items: center;
             z-index: 9999; transition: opacity 1s ease;
         }
+        dotlottie-player { width: 300px; height: 300px; }
 
-        dotlottie-player {
-            width: 300px; 
-            height: 300px;
-        }
-
-        /* --- ENTRANCE ANIMATION --- */
+        /* --- ENTRANCE --- */
         nav, main { 
-            opacity: 0; 
-            transform: translateY(30px); 
+            opacity: 0; transform: translateY(30px); 
             transition: opacity 2s cubic-bezier(0.16, 1, 0.3, 1), transform 2s cubic-bezier(0.16, 1, 0.3, 1); 
             pointer-events: none;
         }
         .loaded nav, .loaded main { opacity: 1; transform: translateY(0); pointer-events: auto; }
 
-        /* --- BASE --- */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
         body { background-color: #000; color: white; overflow-x: hidden; height: 400vh; }
         html.lenis, html.lenis body { height: auto; }
 
-        /* --- BACKGROUND ENGINE --- */
+        /* --- BACKGROUNDS --- */
         .bg-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: #000; }
         .spline-scene {
             position: absolute; top: -5%; left: -5%; width: 110%; height: 110%;
             opacity: 0; transition: opacity 0.8s ease;
-            display: none; pointer-events: none; will-change: opacity, transform, filter;
+            display: none; pointer-events: none; will-change: opacity;
         }
 
-        /* Reduced brightness for first background */
         #scene-1 { display: block; opacity: 1; filter: brightness(0.4) contrast(1.1); }
 
         /* --- UI --- */
@@ -79,10 +69,10 @@
             background: white; color: black; text-decoration: none; 
             border-radius: 100px; font-weight: 800; transition: 0.4s; 
         }
-        .btn:hover { background: var(--accent); color: white; transform: scale(1.05); box-shadow: 0 10px 20px rgba(0,122,255,0.3); }
+        .btn:hover { background: var(--accent); color: white; transform: scale(1.05); }
 
         .footer-text { text-align: center; }
-        .socials { margin-top: 30px; display: flex; gap: 20px; justify-content: center; opacity: 0.4; font-size: 0.8rem; letter-spacing: 2px; }
+        .socials { margin-top: 30px; display: flex; gap: 20px; justify-content: center; opacity: 0.4; font-size: 0.8rem; }
 
         @media (max-width: 768px) {
             section { padding: 0 5%; }
@@ -92,27 +82,32 @@
 </head>
 <body>
 
-    <!-- LOTTIE LOADER -->
     <div id="loader">
-        <dotlottie-player 
-            src="loading.lottie" 
-            background="transparent" 
-            speed="1" 
-            loop 
-            autoplay>
-        </dotlottie-player>
+        <dotlottie-player src="loading.lottie" background="transparent" speed="1" loop autoplay></dotlottie-player>
     </div>
 
     <nav>
         <div class="logo">VIGNESH</div>
-        <div style="opacity: 0.4; font-size: 0.7rem; letter-spacing: 2px;">V.02 // 120 FPS</div>
+        <div style="opacity: 0.4; font-size: 0.7rem; letter-spacing: 2px;">V.02 // INTERACTIVE</div>
     </nav>
 
     <div class="bg-container">
-        <div id="scene-1" class="spline-scene"><spline-viewer id="main-spline" url="https://prod.spline.design/EZSR1bLlfDTI4smJ/scene.splinecode"></spline-viewer></div>
-        <div id="scene-2" class="spline-scene"><spline-viewer url="https://prod.spline.design/p-ZRUwDwFStpbG8L/scene.splinecode"></spline-viewer></div>
-        <div id="scene-3" class="spline-scene"><spline-viewer events-target="global" url="https://prod.spline.design/Jzm-6QCYydFf-sM8/scene.splinecode"></spline-viewer></div>
-        <div id="scene-4" class="spline-scene"><spline-viewer events-target="global" url="https://prod.spline.design/UDtF0IreE6wGU0nx/scene.splinecode"></spline-viewer></div>
+        <!-- 1. HERO -->
+        <div id="scene-1" class="spline-scene">
+            <spline-viewer id="main-spline" url="https://prod.spline.design/EZSR1bLlfDTI4smJ/scene.splinecode"></spline-viewer>
+        </div>
+        <!-- 2. WORK (Now Interactive) -->
+        <div id="scene-2" class="spline-scene">
+            <spline-viewer events-target="global" url="https://prod.spline.design/p-ZRUwDwFStpbG8L/scene.splinecode"></spline-viewer>
+        </div>
+        <!-- 3. CONTACT -->
+        <div id="scene-3" class="spline-scene">
+            <spline-viewer events-target="global" url="https://prod.spline.design/Jzm-6QCYydFf-sM8/scene.splinecode"></spline-viewer>
+        </div>
+        <!-- 4. FOOTER -->
+        <div id="scene-4" class="spline-scene">
+            <spline-viewer events-target="global" url="https://prod.spline.design/UDtF0IreE6wGU0nx/scene.splinecode"></spline-viewer>
+        </div>
     </div>
 
     <main>
@@ -125,7 +120,7 @@
             <h2 style="font-size: 3rem; margin-bottom: 40px;">Selected Work</h2>
             <div class="projects-grid">
                 <div class="card"><h3>3D Visuals</h3><p>Interactive web experiences.</p></div>
-                <div class="card"><h3>Modern UI</h3><p>Optimized for 120Hz motion.</p></div>
+                <div class="card"><h3>Modern UI</h3><p>Optimized for touch interaction.</p></div>
             </div>
         </section>
 
@@ -147,36 +142,22 @@
         // --- LOADER LOGIC ---
         const mainSpline = document.getElementById('main-spline');
         const loader = document.getElementById('loader');
-
         function hideLoader() {
             if (loader.style.opacity !== '0') {
                 loader.style.opacity = '0';
-                // Trigger the slow fade-in of content
                 document.body.classList.add('loaded');
-                setTimeout(() => {
-                    loader.style.display = 'none';
-                }, 1000);
+                setTimeout(() => { loader.style.display = 'none'; }, 1000);
             }
         }
-
-        // 1. Standard Load Event
         mainSpline.addEventListener('load', hideLoader);
-
-        // 2. Polling Check (Checks if 3D canvas exists)
         const checkCanvas = setInterval(() => {
             if (mainSpline.shadowRoot && mainSpline.shadowRoot.querySelector('canvas')) {
-                hideLoader();
-                clearInterval(checkCanvas);
+                hideLoader(); clearInterval(checkCanvas);
             }
         }, 500);
+        setTimeout(hideLoader, 5000);
 
-        // 3. Emergency Timeout (7 seconds)
-        setTimeout(() => {
-            hideLoader();
-            clearInterval(checkCanvas);
-        }, 7000);
-
-        // --- SMOOTH SCROLL (LENIS) ---
+        // --- SMOOTH SCROLL ---
         const lenis = new Lenis({ lerp: 0.1, touchMultiplier: 1.2 });
         function raf(time) {
             lenis.raf(time);
@@ -185,7 +166,7 @@
         }
         requestAnimationFrame(raf);
 
-        // --- SCENE MANAGER ---
+        // --- SCENE MANAGER (INTERACTIVE OPTIMIZED) ---
         const scenes = [
             document.getElementById('scene-1'), 
             document.getElementById('scene-2'), 
@@ -205,20 +186,14 @@
                 if (i === active) {
                     if (s.style.display !== 'block') { 
                         s.style.display = 'block'; 
-                        setTimeout(() => s.style.opacity = "1", 10); 
+                        setTimeout(() => { s.style.opacity = "1"; s.style.zIndex = "5"; }, 10); 
                     }
                 } else {
                     s.style.opacity = "0";
-                    setTimeout(() => { 
-                        if(s.style.opacity === "0") s.style.display = 'none'; 
-                    }, 800);
+                    s.style.zIndex = "1";
+                    setTimeout(() => { if(s.style.opacity === "0") s.style.display = 'none'; }, 800);
                 }
             });
-
-            if (active === 1) {
-                const rot = (scrollY - vh * 0.7) * 0.12;
-                scenes[1].style.transform = `scale(1.2) rotate(${rot}deg) translateZ(0)`;
-            }
         }
 
         // --- WATERMARK REMOVER ---
