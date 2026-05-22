@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vignesh | Portfolio</title>
+    <title>Vignesh | Portfolio 2026</title>
     
-    <!-- Libraries -->
+    <link rel="preconnect" href="https://prod.spline.design">
+    <link rel="preload" href="https://unpkg.com/@splinetool/viewer@1.12.94/build/spline-viewer.js" as="script">
+
     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.94/build/spline-viewer.js"></script>
     <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script> 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;800&display=swap" rel="stylesheet">
@@ -17,103 +19,84 @@
             --border: rgba(255, 255, 255, 0.1);
         }
 
-        /* Smooth Scroll Setup */
+        /* --- LOADER STYLES --- */
+        #loader {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .loader-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 10px;
+            color: white;
+            animation: pulse 1.5s infinite ease-in-out;
+            font-family: 'Inter', sans-serif;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.2; transform: scale(0.95); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        /* --- CONTENT FADE-IN ANIMATION --- */
+        nav, main { 
+            opacity: 0; 
+            /* Start slightly lower for the slide-up effect */
+            transform: translateY(40px); 
+            /* Slow 2-second transition for a premium feel */
+            transition: opacity 2s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 2s cubic-bezier(0.16, 1, 0.3, 1); 
+            pointer-events: none;
+            will-change: opacity, transform;
+        }
+
+        .loaded nav, .loaded main { 
+            opacity: 1; 
+            transform: translateY(0); /* Slide to original position */
+            pointer-events: auto;
+        }
+
+        /* --- BASE STYLES --- */
         html.lenis, html.lenis body { height: auto; }
         .lenis.lenis-smooth { scroll-behavior: auto !important; }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        body { background-color: #000; color: white; overflow-x: hidden; height: 400vh; }
 
-        body {
-            background-color: #000;
-            color: white;
-            overflow-x: hidden;
-            height: 400vh; /* 4 Sections */
-        }
-
-        /* --- BACKGROUND ENGINE --- */
-        .bg-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            overflow: hidden;
-            background: #000;
-        }
+        .bg-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; overflow: hidden; background: #000; }
 
         .spline-scene {
             position: absolute;
-            top: -5%;
-            left: -5%;
-            width: 110%;
-            height: 110%;
+            top: -5%; left: -5%;
+            width: 110%; height: 110%;
             opacity: 0;
-            transition: opacity 1s cubic-bezier(0.23, 1, 0.32, 1);
-            pointer-events: none; /* Allows scrolling over text */
+            transition: opacity 1.5s cubic-bezier(0.23, 1, 0.32, 1);
+            pointer-events: none; 
             will-change: transform, opacity;
+            transform: translateZ(0);
         }
 
-        /* --- CONTENT STYLING --- */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 40px 60px;
-            display: flex;
-            justify-content: space-between;
-            z-index: 100;
-        }
-
+        /* --- UI STYLING --- */
+        nav { position: fixed; top: 0; width: 100%; padding: 40px 60px; display: flex; justify-content: space-between; z-index: 100; }
         .logo { font-weight: 800; font-size: 1.4rem; letter-spacing: -1px; }
 
-        section {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 10%;
-            position: relative;
-            z-index: 10;
-        }
-
+        section { height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 10%; position: relative; z-index: 10; }
         .hero { align-items: center; text-align: center; }
         .hero h1 { font-size: clamp(4rem, 12vw, 9rem); font-weight: 800; line-height: 0.8; }
 
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .card { background: var(--glass); backdrop-filter: blur(25px); border: 1px solid var(--border); padding: 40px; border-radius: 30px; }
 
-        .card {
-            background: var(--glass);
-            backdrop-filter: blur(25px);
-            border: 1px solid var(--border);
-            padding: 40px;
-            border-radius: 30px;
-        }
-
-        .btn {
-            display: inline-block;
-            margin-top: 40px;
-            padding: 20px 50px;
-            background: white;
-            color: black;
-            text-decoration: none;
-            border-radius: 100px;
-            font-weight: 800;
-            pointer-events: auto; /* Clickable */
-            transition: 0.3s;
-        }
-
-        .btn:hover { background: var(--accent); color: white; }
+        .btn { display: inline-block; margin-top: 40px; padding: 20px 50px; background: white; color: black; text-decoration: none; border-radius: 100px; font-weight: 800; pointer-events: auto; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .btn:hover { background: var(--accent); color: white; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 122, 255, 0.3); }
 
         .footer-text { text-align: center; }
         .social-links { margin-top: 30px; display: flex; gap: 20px; justify-content: center; opacity: 0.5; font-size: 0.8rem; }
@@ -121,28 +104,25 @@
 </head>
 <body>
 
+    <div id="loader">
+        <div class="loader-text">VIGNESH</div>
+    </div>
+
     <nav>
         <div class="logo">VIGNESH</div>
-        <div style="opacity: 0.4; font-size: 0.8rem;">ULTRA-SMOOTH // INTERACTIVE</div>
+        <div style="opacity: 0.4; font-size: 0.8rem;">V.02 // 120 FPS</div>
     </nav>
 
     <div class="bg-container">
-        <!-- 1. HERO -->
         <div id="scene-hero" class="spline-scene" style="opacity: 1; z-index: 4;">
-            <spline-viewer url="https://prod.spline.design/EZSR1bLlfDTI4smJ/scene.splinecode"></spline-viewer>
+            <spline-viewer id="main-spline" url="https://prod.spline.design/EZSR1bLlfDTI4smJ/scene.splinecode"></spline-viewer>
         </div>
-        
-        <!-- 2. WORK (SPIN) -->
         <div id="scene-work" class="spline-scene" style="z-index: 3;">
             <spline-viewer url="https://prod.spline.design/p-ZRUwDwFStpbG8L/scene.splinecode"></spline-viewer>
         </div>
-
-        <!-- 3. CONTACT (CURSOR TRACKER 1) -->
         <div id="scene-contact" class="spline-scene" style="z-index: 2;">
             <spline-viewer events-target="global" url="https://prod.spline.design/Jzm-6QCYydFf-sM8/scene.splinecode"></spline-viewer>
         </div>
-
-        <!-- 4. FOOTER (CURSOR TRACKER 2) -->
         <div id="scene-footer" class="spline-scene" style="z-index: 1;">
             <spline-viewer events-target="global" url="https://prod.spline.design/UDtF0IreE6wGU0nx/scene.splinecode"></spline-viewer>
         </div>
@@ -151,14 +131,14 @@
     <main>
         <section class="hero">
             <h1>VIGNESH</h1>
-            <p style="margin-top: 20px; opacity: 0.5;">Experience Fluidity.</p>
+            <p style="margin-top: 20px; opacity: 0.5; letter-spacing: 3px;">Experience Fluidity.</p>
         </section>
 
         <section id="work">
             <h2 style="font-size: 3.5rem; margin-bottom: 40px;">Selected Work</h2>
             <div class="projects-grid">
-                <div class="card"><h3>Project A</h3><p>Interactive 3D Engine</p></div>
-                <div class="card"><h3>Project B</h3><p>Next-Gen Interface</p></div>
+                <div class="card"><h3>Architecture</h3><p>Optimized for high-refresh displays.</p></div>
+                <div class="card"><h3>3D Interaction</h3><p>Immersive browser experiences.</p></div>
             </div>
         </section>
 
@@ -171,15 +151,35 @@
 
         <section class="footer-text">
             <h2 style="font-size: 2.5rem; opacity: 0.8;">THANKS FOR EXPLORING</h2>
-            <div class="social-links">
-                <span>LINKEDIN</span> / <span>GITHUB</span> / <span>X</span>
-            </div>
+            <div class="social-links"><span>LINKEDIN</span> / <span>GITHUB</span> / <span>X</span></div>
             <p style="margin-top: 100px; font-size: 0.7rem; opacity: 0.3;">© 2026 VIGNESH</p>
         </section>
     </main>
 
     <script>
-        // 1. Smooth Scroll Init
+        const mainSpline = document.getElementById('main-spline');
+        const loader = document.getElementById('loader');
+
+        function hideLoader() {
+            if (loader.style.display !== 'none') {
+                loader.style.opacity = '0';
+                // Trigger the slow fade-in of main content
+                document.body.classList.add('loaded');
+                setTimeout(() => { loader.style.display = 'none'; }, 1000);
+            }
+        }
+
+        // Loader Safety Checks
+        mainSpline.addEventListener('load', hideLoader);
+        const checkInterval = setInterval(() => {
+            if (mainSpline.shadowRoot && mainSpline.shadowRoot.querySelector('canvas')) {
+                hideLoader();
+                clearInterval(checkInterval);
+            }
+        }, 500);
+        setTimeout(() => { hideLoader(); clearInterval(checkInterval); }, 5000);
+
+        // Smooth Scroll
         const lenis = new Lenis();
         function raf(time) {
             lenis.raf(time);
@@ -188,7 +188,7 @@
         }
         requestAnimationFrame(raf);
 
-        // 2. Watermark Remover
+        // Watermark Remover
         function cleanSpline() {
             document.querySelectorAll('spline-viewer').forEach(viewer => {
                 if (viewer.shadowRoot) {
@@ -199,50 +199,27 @@
         }
         setInterval(cleanSpline, 500);
 
-        // 3. Scene Management Logic
-        const s1 = document.getElementById('scene-hero');
-        const s2 = document.getElementById('scene-work');
-        const s3 = document.getElementById('scene-contact');
-        const s4 = document.getElementById('scene-footer');
+        // Scene Logic
+        const s1 = document.getElementById('scene-hero'), s2 = document.getElementById('scene-work'), s3 = document.getElementById('scene-contact'), s4 = document.getElementById('scene-footer');
 
         function updateScenes() {
-            const scrollY = window.scrollY;
-            const vh = window.innerHeight;
-
-            // SECTION 1: HERO
-            if (scrollY < vh * 0.7) {
-                setStates(1);
-            } 
-            // SECTION 2: WORK (SPIN)
-            else if (scrollY >= vh * 0.7 && scrollY < vh * 1.7) {
+            const scrollY = window.scrollY, vh = window.innerHeight;
+            if (scrollY < vh * 0.7) setStates(1);
+            else if (scrollY < vh * 1.7) {
                 setStates(2);
-                const rotation = (scrollY - vh * 0.7) * 0.15;
-                s2.style.transform = `scale(1.2) rotate(${rotation}deg) translateZ(0)`;
+                const rot = (scrollY - vh * 0.7) * 0.15;
+                s2.style.transform = `scale(1.2) rotate(${rot}deg) translateZ(0)`;
             } 
-            // SECTION 3: CONTACT (CURSOR 1)
-            else if (scrollY >= vh * 1.7 && scrollY < vh * 2.7) {
-                setStates(3);
-            }
-            // SECTION 4: FOOTER (CURSOR 2)
-            else {
-                setStates(4);
-            }
+            else if (scrollY < vh * 2.7) setStates(3);
+            else setStates(4);
         }
 
-        // Helper to handle Z-Index and Opacity so cursor events don't overlap
-        function setStates(activeNum) {
-            const scenes = [s1, s2, s3, s4];
-            scenes.forEach((scene, index) => {
-                if (index + 1 === activeNum) {
-                    scene.style.opacity = "1";
-                    scene.style.zIndex = "5"; // Active scene on top for global events
-                } else {
-                    scene.style.opacity = "0";
-                    scene.style.zIndex = "1";
-                }
+        function setStates(n) {
+            [s1, s2, s3, s4].forEach((s, i) => {
+                if (i + 1 === n) { s.style.opacity = "1"; s.style.zIndex = "5"; }
+                else { s.style.opacity = "0"; s.style.zIndex = "1"; }
             });
         }
     </script>
-
 </body>
 </html>
