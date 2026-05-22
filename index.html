@@ -8,6 +8,10 @@
     <!-- Pre-connect for speed -->
     <link rel="preconnect" href="https://prod.spline.design">
     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.94/build/spline-viewer.js"></script>
+    
+    <!-- Lottie Player Script -->
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+    
     <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script> 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;800&display=swap" rel="stylesheet">
 
@@ -18,14 +22,17 @@
             --border: rgba(255, 255, 255, 0.1);
         }
 
-        /* --- LOADER --- */
+        /* --- LOTTIE LOADER --- */
         #loader {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: #000; display: flex; justify-content: center; align-items: center;
             z-index: 9999; transition: opacity 1s ease;
         }
-        .loader-text { font-size: 1.2rem; font-weight: 800; letter-spacing: 8px; color: white; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+        dotlottie-player {
+            width: 300px; 
+            height: 300px;
+        }
 
         /* --- ENTRANCE ANIMATION --- */
         nav, main { 
@@ -85,7 +92,16 @@
 </head>
 <body>
 
-    <div id="loader"><div class="loader-text">VIGNESH</div></div>
+    <!-- LOTTIE LOADER -->
+    <div id="loader">
+        <dotlottie-player 
+            src="loading.lottie" 
+            background="transparent" 
+            speed="1" 
+            loop 
+            autoplay>
+        </dotlottie-player>
+    </div>
 
     <nav>
         <div class="logo">VIGNESH</div>
@@ -128,25 +144,39 @@
     </main>
 
     <script>
-        // 1. Loader Triple-Safety
+        // --- LOADER LOGIC ---
         const mainSpline = document.getElementById('main-spline');
         const loader = document.getElementById('loader');
+
         function hideLoader() {
             if (loader.style.opacity !== '0') {
                 loader.style.opacity = '0';
+                // Trigger the slow fade-in of content
                 document.body.classList.add('loaded');
-                setTimeout(() => { loader.style.display = 'none'; }, 1000);
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 1000);
             }
         }
+
+        // 1. Standard Load Event
         mainSpline.addEventListener('load', hideLoader);
+
+        // 2. Polling Check (Checks if 3D canvas exists)
         const checkCanvas = setInterval(() => {
             if (mainSpline.shadowRoot && mainSpline.shadowRoot.querySelector('canvas')) {
-                hideLoader(); clearInterval(checkCanvas);
+                hideLoader();
+                clearInterval(checkCanvas);
             }
         }, 500);
-        setTimeout(hideLoader, 5000);
 
-        // 2. Smooth Scroll (Lenis)
+        // 3. Emergency Timeout (7 seconds)
+        setTimeout(() => {
+            hideLoader();
+            clearInterval(checkCanvas);
+        }, 7000);
+
+        // --- SMOOTH SCROLL (LENIS) ---
         const lenis = new Lenis({ lerp: 0.1, touchMultiplier: 1.2 });
         function raf(time) {
             lenis.raf(time);
@@ -155,8 +185,14 @@
         }
         requestAnimationFrame(raf);
 
-        // 3. Optimized Scene Manager
-        const scenes = [document.getElementById('scene-1'), document.getElementById('scene-2'), document.getElementById('scene-3'), document.getElementById('scene-4')];
+        // --- SCENE MANAGER ---
+        const scenes = [
+            document.getElementById('scene-1'), 
+            document.getElementById('scene-2'), 
+            document.getElementById('scene-3'), 
+            document.getElementById('scene-4')
+        ];
+
         function updateScenes() {
             const scrollY = window.scrollY, vh = window.innerHeight;
             let active = 0;
@@ -167,10 +203,15 @@
 
             scenes.forEach((s, i) => {
                 if (i === active) {
-                    if (s.style.display !== 'block') { s.style.display = 'block'; setTimeout(() => s.style.opacity = "1", 10); }
+                    if (s.style.display !== 'block') { 
+                        s.style.display = 'block'; 
+                        setTimeout(() => s.style.opacity = "1", 10); 
+                    }
                 } else {
                     s.style.opacity = "0";
-                    setTimeout(() => { if(s.style.opacity === "0") s.style.display = 'none'; }, 800);
+                    setTimeout(() => { 
+                        if(s.style.opacity === "0") s.style.display = 'none'; 
+                    }, 800);
                 }
             });
 
@@ -180,7 +221,7 @@
             }
         }
 
-        // 4. Watermark Remover
+        // --- WATERMARK REMOVER ---
         setInterval(() => {
             document.querySelectorAll('spline-viewer').forEach(v => {
                 if (v.shadowRoot) {
