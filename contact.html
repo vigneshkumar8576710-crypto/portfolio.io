@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Vignesh</title>
+    
+    <!-- Spline Engine -->
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.94/build/spline-viewer.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --accent: #007AFF;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: #000;
+            color: white;
+            overflow: hidden; /* No scroll needed for this page */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- 3D INTERACTIVE BACKGROUND --- */
+        .bg-container {
+            position: fixed;
+            top: -5%; left: -5%;
+            width: 110%; height: 110%;
+            z-index: -1;
+            /* Ensures smooth rendering */
+            transform: translate3d(0,0,0);
+        }
+
+        spline-viewer {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* --- CONTACT FORM UI --- */
+        .contact-card {
+            width: 90%;
+            max-width: 450px;
+            background: var(--glass);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            padding: 40px;
+            border-radius: 35px;
+            border: 1px solid var(--border);
+            text-align: center;
+            z-index: 10;
+            animation: slideIn 1s cubic-bezier(0.16, 1, 0.3, 1);
+            /* Let mouse events pass through the empty areas of the card to the Spline scene */
+            pointer-events: auto;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        h1 { font-size: 2.2rem; margin-bottom: 8px; font-weight: 800; letter-spacing: -1px; }
+        p { opacity: 0.5; margin-bottom: 30px; font-size: 0.9rem; }
+
+        .input-group { text-align: left; margin-bottom: 15px; }
+        label { 
+            display: block; font-size: 0.65rem; 
+            text-transform: uppercase; letter-spacing: 2px; 
+            margin-bottom: 8px; opacity: 0.6; 
+        }
+        
+        input, textarea {
+            width: 100%;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            padding: 14px;
+            border-radius: 14px;
+            color: white;
+            font-size: 0.95rem;
+            outline: none;
+            transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        input:focus, textarea:focus { 
+            border-color: var(--accent); 
+            background: rgba(255,255,255,0.08);
+            box-shadow: 0 0 20px rgba(0, 122, 255, 0.2);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: white;
+            color: black;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover { 
+            background: var(--accent); 
+            color: white; 
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 122, 255, 0.3);
+        }
+
+        .back-nav {
+            position: absolute;
+            top: 40px; left: 40px;
+            color: white;
+            text-decoration: none;
+            font-size: 0.8rem;
+            opacity: 0.4;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+            z-index: 20;
+        }
+        .back-nav:hover { opacity: 1; transform: translateX(-5px); }
+
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-nav">← BACK TO WORLD</a>
+
+    <!-- INTERACTIVE 3D BACKGROUND -->
+    <div class="bg-container">
+        <!-- events-target="global" ensures the interaction works even behind the form -->
+        <spline-viewer events-target="global" url="https://prod.spline.design/kbEFi29YKb7GEyYz/scene.splinecode"></spline-viewer>
+    </div>
+
+    <!-- FORM OVERLAY -->
+    <div class="contact-card">
+        <h1>Get in Touch</h1>
+        <p>Let's build something extraordinary together.</p>
+
+        <form action="#">
+            <div class="input-group">
+                <label>Full Name</label>
+                <input type="text" placeholder="Enter your name" required>
+            </div>
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" placeholder="email@example.com" required>
+            </div>
+            <div class="input-group">
+                <label>Project Details</label>
+                <textarea rows="4" placeholder="How can I help you?"></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+    </div>
+
+    <script>
+        // Watermark Remover logic
+        function cleanSpline() {
+            const viewer = document.querySelector('spline-viewer');
+            if (viewer && viewer.shadowRoot) {
+                const logo = viewer.shadowRoot.querySelector('#logo');
+                if (logo) logo.style.display = 'none';
+            }
+        }
+        setInterval(cleanSpline, 500);
+    </script>
+
+</body>
+</html>
